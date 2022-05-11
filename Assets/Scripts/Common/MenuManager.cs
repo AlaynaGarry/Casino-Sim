@@ -5,21 +5,41 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class MenuManager : MonoBehaviour
+public class MenuManager : Singleton<MenuManager>
 {
     [SerializeField] GameObject credits;
-    [SerializeField] GameObject menu;
     [SerializeField] GameObject settings;
     [SerializeField] GameObject pause;
     [SerializeField] Slider master;
     [SerializeField] Slider music;
     [SerializeField] Slider sfx;
 
+    private void Start()
+    {
+        master.onValueChanged.AddListener(delegate { changeMaster(); });
+        music.onValueChanged.AddListener(delegate { changeMusic(); });
+        sfx.onValueChanged.AddListener(delegate { changeSFX(); });
+        SceneManager.sceneLoaded += (delegate { EnsureAllUIOff(); }) ;
+    }
 
+    public void GoFromCanvasToCanvas(GameObject canvasFrom, GameObject canvasTo)
+    {
+        GameManager.Instance.gameObject.GetComponent<ScreenFade>().FadeOut(.25f);
+        StartCoroutine(FromCanvasToCanvas(canvasFrom, canvasTo));
+    }
+
+    IEnumerator FromCanvasToCanvas(GameObject canvasFrom, GameObject canvasTo)
+    {
+        yield return new WaitUntil(() => GameManager.instance.gameObject.GetComponent<ScreenFade>().isDone);
+        GameManager.Instance.gameObject.GetComponent<ScreenFade>().FadeIn(.25f);
+
+        canvasFrom.SetActive(false);
+        canvasTo.SetActive(true);
+    }
 
     public void SeeSettings()
     {
-        GameManager.Instance.gameObject.GetComponent<ScreenFade>().FadeOut();
+        GameManager.Instance.gameObject.GetComponent<ScreenFade>().FadeOut(.25f);
         master.value = AudioManager.Instance.masterVolume;
         music.value = AudioManager.Instance.musicVolume;
         sfx.value = AudioManager.Instance.sfxVolume;
@@ -27,7 +47,7 @@ public class MenuManager : MonoBehaviour
     }
     public void SeePause()
     {
-        GameManager.Instance.gameObject.GetComponent<ScreenFade>().FadeOut();
+        GameManager.Instance.gameObject.GetComponent<ScreenFade>().FadeOut(.25f);
         StartCoroutine(GoToPause());
     }
 
@@ -35,12 +55,6 @@ public class MenuManager : MonoBehaviour
     {
         GameManager.Instance.gameObject.GetComponent<ScreenFade>().FadeOut();
         StartCoroutine(GoToCredits());
-    }
-    public void SeeMainMenu()
-    {
-        GameManager.Instance.gameObject.GetComponent<ScreenFade>().FadeOut();
-        StartCoroutine(GoToMainMenu());
-
     }
     public void SelectLevel(string sceneName)
     {
@@ -60,39 +74,52 @@ public class MenuManager : MonoBehaviour
         StartCoroutine(FadeToQuit());
     }
 
+    public void BackFromSettings()
+    {
+        string currentScene = SceneManager.GetActiveScene().name;
+        if(name != "MainMenu")
+        {
+            SeePause();
+        }
+        else
+        {
+            GameManager.Instance.gameObject.GetComponent<ScreenFade>().FadeOut();
+            StartCoroutine(BackToMainMenu());
+        }
+    }
+
+    IEnumerator BackToMainMenu()
+    {
+        yield return new WaitUntil(() => GameManager.instance.gameObject.GetComponent<ScreenFade>().isDone);
+        GameManager.Instance.gameObject.GetComponent<ScreenFade>().FadeIn();
+        settings.SetActive(false);
+    }
+
     IEnumerator GoToCredits()
     {
         yield return new WaitUntil(() => GameManager.Instance.gameObject.GetComponent<ScreenFade>().isDone);
         GameManager.Instance.gameObject.GetComponent<ScreenFade>().FadeIn();
-        menu.SetActive(false);
+        
         credits.SetActive(true);
     }
-    
+
     IEnumerator GoToSettings()
     {
         yield return new WaitUntil(() => GameManager.Instance.gameObject.GetComponent<ScreenFade>().isDone);
-        GameManager.Instance.gameObject.GetComponent<ScreenFade>().FadeIn();
-        if (menu) menu.SetActive(false);
-        else if (pause) pause.SetActive(false);
+        GameManager.Instance.gameObject.GetComponent<ScreenFade>().FadeIn(.25f);
+        if (pause) pause.SetActive(false);
         settings.SetActive(true);
     }
 
     IEnumerator GoToPause()
     {
         yield return new WaitUntil(() => GameManager.Instance.gameObject.GetComponent<ScreenFade>().isDone);
-        GameManager.Instance.gameObject.GetComponent<ScreenFade>().FadeIn();
-        
+        GameManager.Instance.gameObject.GetComponent<ScreenFade>().FadeIn(.25f);
+
         settings.SetActive(false);
         pause.SetActive(true);
     }
-    IEnumerator GoToMainMenu()
-    {
-        yield return new WaitUntil(() => GameManager.Instance.gameObject.GetComponent<ScreenFade>().isDone);
-        GameManager.Instance.gameObject.GetComponent<ScreenFade>().FadeIn();
-        settings.SetActive(false);
-        credits.SetActive(false);
-        menu.SetActive(true);
-    }
+   
     IEnumerator FadeToReload()
     {
         yield return new WaitUntil(() => GameManager.Instance.gameObject.GetComponent<ScreenFade>().isDone);
@@ -119,5 +146,12 @@ public class MenuManager : MonoBehaviour
     public void changeMusic()
     {
         AudioManager.Instance.musicVolume = music.value;
+    }
+
+    private void EnsureAllUIOff()
+    {
+        pause?.SetActive(false);
+        settings?.SetActive(false);
+        if(credits) credits.SetActive(false);
     }
 }

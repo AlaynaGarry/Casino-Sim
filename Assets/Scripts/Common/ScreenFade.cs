@@ -22,27 +22,21 @@ public class ScreenFade : MonoBehaviour
         }
     }
 
-	private void Update()
-	{
-        // only used for debugging
-		//if (Input.GetKeyDown(KeyCode.UpArrow)) FadeIn();
-		//if (Input.GetKeyDown(KeyCode.DownArrow)) FadeOut();
-    }
-
-    public void FadeIn()
+    public void FadeIn(float time = 0)
 	{
         isDone = false;
         image.gameObject.SetActive(true);
 
-        StartCoroutine(FadeRoutine(startColor, endColor, time));
+        StartCoroutine(FadeRoutine(startColor, endColor, time == 0 ? this.time : time));
     }
 
-    public void FadeOut(bool deactivate = true)
+    public void FadeOut(float time = 0, bool deactivate = true)
     {
+        
         isDone = false;
         image.gameObject.SetActive(true);
 
-        StartCoroutine(FadeRoutine(endColor, startColor, time, deactivate));
+        StartCoroutine(FadeRoutine(endColor, startColor, time == 0 ? this.time : time, deactivate));
     }
 
     IEnumerator FadeRoutine(Color color1, Color color2, float time, bool deactivate = true)
