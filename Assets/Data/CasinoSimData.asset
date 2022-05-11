@@ -15,9 +15,21 @@ MonoBehaviour:
   boolData:
     values: []
   intData:
-    values: []
+    values:
+    - key: ChipsInHand
+      value: 0
+    - key: ChipsInLimbo
+      value: 0
+    - key: MoneyInBank
+      value: 10
   floatData:
-    values: []
+    values:
+    - key: MasterVolume
+      value: 1
+    - key: SFXVolume
+      value: 0.76871043
+    - key: MusicVolume
+      value: 0.48404634
   stringData:
     values: []
   vector3Data:

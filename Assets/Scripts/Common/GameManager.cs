@@ -12,7 +12,6 @@ public class GameManager : Singleton<GameManager>
         TITLE,
         PLAYER_START,
         GAME,
-        PLAYER_DEAD,
         GAME_OVER,
         GAME_WIN,
         GAME_WAIT
@@ -23,42 +22,28 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] GameObject loseUI;
     [SerializeField] AudioClip loseMusic;
     [SerializeField] AudioClip winMusic;
+    
 
     public Pause pauser;
     public GameData gameData;
 
     public State state = State.TITLE;
-    int highScore;
 
     public override void Awake()
     {
-        base.Awake();
-
-        gameData.intData["Score"] = 0;
-
-        
+        base.Awake();       
 
         SceneManager.activeSceneChanged += OnSceneWasLoaded;
+        SceneManager.sceneLoaded += (delegate { EnsureAllUIOff(); });
     }
 
     private void Start()
     {
         InitScene();
     }
+
     void InitScene()
-    {
-        string sceneName = SceneManager.GetActiveScene().name;
-        if (sceneName == "Level1")
-        {
-            state = State.GAME;
-            Restart();
-        }
-        else if (sceneName == "MainMenu")
-        {
-            state = State.TITLE;
-            winUI.SetActive(false);
-            loseUI.SetActive(false);
-        }
+    {        
         SceneDescriptor sceneDescriptor = FindObjectOfType<SceneDescriptor>();
         if (sceneDescriptor != null)
         {
@@ -69,6 +54,8 @@ public class GameManager : Singleton<GameManager>
 
     private void Update()
     {
+
+        
         switch (state)
         {
             case State.TITLE:
@@ -76,28 +63,15 @@ public class GameManager : Singleton<GameManager>
             case State.PLAYER_START:
                 break;
             case State.GAME:
-                if (gameData.intData["Score"] >= gameData.intData["ScoreToWin"])
+                if (gameData.intData["Chips"] <= 0 && gameData.intData["ChipsInLimbo"] == 0)
                 {
-                    AudioManager.Instance.PlayMusic(winMusic);
-                    state = State.GAME_WIN;
-                }else if(gameData.floatData["TimeRemaing"] <= 0)
-                {
-                    state = State.PLAYER_DEAD;
+                    state = State.GAME_OVER;
+                    OnLose();
                 }
                 break;
-            case State.PLAYER_DEAD:
-                AudioManager.Instance.PlayMusic(loseMusic);
-                state = State.GAME_OVER;
-                break;
             case State.GAME_OVER:
-                Time.timeScale = 0;
-                loseUI.SetActive(true);
-                state = State.GAME_WAIT;
                 break;
             case State.GAME_WIN:
-                Time.timeScale = 0;
-                winUI.SetActive(true);
-                state = State.GAME_WAIT;
                 break;
             case State.GAME_WAIT:
                 break;
@@ -111,19 +85,46 @@ public class GameManager : Singleton<GameManager>
         sceneLoader.Load(sceneName);
     }
 
-    public void OnPlayerDead()
-    {
-        state = State.PLAYER_DEAD;
-    }
-
     void OnSceneWasLoaded(Scene current, Scene next)
     {
         InitScene();
     }
 
-    public void Restart()
+    public void RestartGame()
     {
-        gameData.intData["Score"] = 0;
-        gameData.intData["Health"] = gameData.intData["MaxHealth"];
+        
+    }
+
+    public int[] GetRandomResult(int minInclusive, int maxInclusive, int numOfResults = 1)
+    {
+        if (numOfResults <= 0) return new int[0];
+        int[] resultingArray = new int[numOfResults];
+        for (int resultIndex = 0; resultIndex < resultingArray.Length; resultIndex++)
+        {
+            resultingArray[resultIndex] = Random.Range(minInclusive, maxInclusive);
+        }
+        return resultingArray;
+    }
+
+
+    public void OnLose()
+    {
+        loseUI.SetActive(true);
+        pauser.paused = false;
+        if (loseMusic) AudioManager.Instance.PlayMusic(loseMusic);
+    }
+
+    public void OnWin()
+    {
+        state = State.GAME_WIN;
+        pauser.paused = false;
+        if (winMusic) AudioManager.Instance.PlayMusic(winMusic);
+        winUI.SetActive(true);
+    }
+
+    private void EnsureAllUIOff()
+    {
+        winUI?.SetActive(false);
+        loseUI?.SetActive(false);
     }
 }
