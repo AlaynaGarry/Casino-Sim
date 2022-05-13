@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MainMenuHnadler : MonoBehaviour
+public class MainMenuHandler : MonoBehaviour
 {
     [SerializeField] GameObject mainMenu;//0
     [SerializeField] GameObject bank;//1
@@ -41,5 +41,15 @@ public class MainMenuHnadler : MonoBehaviour
     {
         MenuManager.Instance.GoFromCanvasToCanvas(mainMenu, gameSelect);
 
+    }
+
+    public void QuitGame()
+    {
+        MenuManager.Instance.QuitGame();
+    }
+
+    public void ToSettings()
+    {
+        MenuManager.Instance.SeeSettings();
     }
 }

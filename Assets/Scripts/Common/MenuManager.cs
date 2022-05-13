@@ -77,13 +77,13 @@ public class MenuManager : Singleton<MenuManager>
     public void BackFromSettings()
     {
         string currentScene = SceneManager.GetActiveScene().name;
-        if(name != "MainMenu")
+        if(currentScene != "MainMenu")
         {
             SeePause();
         }
         else
         {
-            GameManager.Instance.gameObject.GetComponent<ScreenFade>().FadeOut();
+            GameManager.Instance.gameObject.GetComponent<ScreenFade>().FadeOut(.25f);
             StartCoroutine(BackToMainMenu());
         }
     }
@@ -91,7 +91,7 @@ public class MenuManager : Singleton<MenuManager>
     IEnumerator BackToMainMenu()
     {
         yield return new WaitUntil(() => GameManager.instance.gameObject.GetComponent<ScreenFade>().isDone);
-        GameManager.Instance.gameObject.GetComponent<ScreenFade>().FadeIn();
+        GameManager.Instance.gameObject.GetComponent<ScreenFade>().FadeIn(.25f);
         settings.SetActive(false);
     }
 
