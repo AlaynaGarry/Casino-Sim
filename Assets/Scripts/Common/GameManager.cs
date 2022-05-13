@@ -22,7 +22,9 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] GameObject loseUI;
     [SerializeField] AudioClip loseMusic;
     [SerializeField] AudioClip winMusic;
-    
+    public List<Sprite> cardImages = new List<Sprite>();
+
+
 
     public Pause pauser;
     public GameData gameData;
