@@ -19,10 +19,13 @@ public class GameManager : Singleton<GameManager>
 
     [SerializeField] SceneLoader sceneLoader;
     [SerializeField] GameObject winUI;
+    [SerializeField] TextMeshProUGUI winUIMessage;
     [SerializeField] GameObject loseUI;
     [SerializeField] AudioClip loseMusic;
     [SerializeField] AudioClip winMusic;
-    
+    public List<Sprite> cardImages = new List<Sprite>();
+
+
 
     public Pause pauser;
     public GameData gameData;
@@ -114,12 +117,13 @@ public class GameManager : Singleton<GameManager>
         if (loseMusic) AudioManager.Instance.PlayMusic(loseMusic);
     }
 
-    public void OnWin()
+    public void OnWin(string messageToDisplay)
     {
         state = State.GAME_WIN;
         pauser.paused = false;
         if (winMusic) AudioManager.Instance.PlayMusic(winMusic);
         winUI.SetActive(true);
+        winUIMessage.text = messageToDisplay;
     }
 
     private void EnsureAllUIOff()
