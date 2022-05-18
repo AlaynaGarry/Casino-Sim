@@ -9,7 +9,7 @@ public class Card : MonoBehaviour
     public cardValue Value;
     public bool onBoard = false;
     public bool hold = false;
-    public bool cardFaceDown = true;
+    public bool cardFaceDown = false;
     public Sprite cardImage;
 
 
@@ -81,7 +81,10 @@ public class Card : MonoBehaviour
             default:
                 break;
         }
-        GetComponent<Image>().sprite = GameManager.Instance.cardImages[(value - 1) + additiveForList];
+        if (TryGetComponent(out Image image))
+            if (cardFaceDown) image.sprite = GameManager.Instance.cardImages[GameManager.Instance.cardImages.Count - 1];
+            else
+                image.sprite = GameManager.Instance.cardImages[(value - 1) + additiveForList];
     }
 
     public Card()

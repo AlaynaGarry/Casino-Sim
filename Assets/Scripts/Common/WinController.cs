@@ -45,6 +45,7 @@ public class WinController : MonoBehaviour
         switch (currentGame)
         {
             case eCurrentGame.BLACKJACK:
+                GameObject.FindObjectOfType<BlackjackManager>().RestartGame();
                 break;
             case eCurrentGame.FIVECARD:
                 break;

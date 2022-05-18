@@ -597,7 +597,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2912,6 +2912,7 @@ MonoBehaviour:
   sceneLoader: {fileID: 826988122}
   winUI: {fileID: 2081080363}
   winUIMessage: {fileID: 219938226}
+  loseUIMessage: {fileID: 35035885}
   loseUI: {fileID: 129206324}
   loseMusic: {fileID: 0}
   winMusic: {fileID: 0}
@@ -2968,6 +2969,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: c1a9ed85241494e48875cb019a5f3bfa, type: 3}
   - {fileID: 21300000, guid: 5b87ae4df64b1274c87c55563b7fdc66, type: 3}
   - {fileID: 21300000, guid: 9ceef2e01482f7e4a9cf1612aeba1218, type: 3}
+  - {fileID: 21300000, guid: 52e3321a10c81d94aaa56ea860ce7b62, type: 3}
   pauser: {fileID: 826988123}
   gameData: {fileID: 11400000, guid: 18112d561f21f9f4897b0d6f9e23c70a, type: 2}
   state: 0
@@ -7076,7 +7078,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78387c51b18b3ed4a9411763ea023390, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  continueButton: {fileID: 0}
+  continueButton: {fileID: 2140617494}
 --- !u!1 &2118083900
 GameObject:
   m_ObjectHideFlags: 0
