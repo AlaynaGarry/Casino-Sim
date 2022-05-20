@@ -20,19 +20,28 @@ public class RouletteTable : MonoBehaviour
         Bets.Add(1, new KeyValuePair<string, bool>("Red", false));
         Bets.Add(2, new KeyValuePair<string, bool>("Black", true));
         Bets.Add(3, new KeyValuePair<string, bool>("Red", false));
+        
+
+    }
+
+    public void resetGame()
+    {
 
     }
 
     public void SetPlayerBet(int betValue)
     {
+        Debug.Log(playerChipBet);
         playerChipBet = betValue;
 
-        Debug.Log(playerChipBet);
+
     }
 
     public void setPlayerBetOnBoard(string bet)
     {
         playerBetLocation = bet;
+
+        Debug.Log(checkPlayerWin(playerBetLocation));
 
         Debug.Log(playerBetLocation);
     }
@@ -48,7 +57,7 @@ public class RouletteTable : MonoBehaviour
         {
             return true;
         }
-        else if(Bets[gameWinningNumber[0]].Key.Equals("Black") && playerBetLocation == "Black")
+        else if (Bets[gameWinningNumber[0]].Key.Equals("Black") && playerBetLocation == "Black")
         {
             return true;
         }
@@ -56,25 +65,22 @@ public class RouletteTable : MonoBehaviour
         {
             return true;
         }
-        else if(Bets[gameWinningNumber[0]].Value == false && playerBetLocation == "Odd")
+        else if (Bets[gameWinningNumber[0]].Value == false && playerBetLocation == "Odd")
         {
             return true;
         }
-        else if(Bets[gameWinningNumber[0]].Value == true && playerBetLocation == "Even")
+        else if (Bets[gameWinningNumber[0]].Value == true && playerBetLocation == "Even")
         {
             return true;
         }
         else if(Bets[gameWinningNumber[0]].Equals(int.Parse(playerBoardBet)))
         {
-
+            return true;
         }
         return false;
     }
 
-    public void resetGame()
-    {
 
-    }
 
     public void HoverOverPiece()
     {
