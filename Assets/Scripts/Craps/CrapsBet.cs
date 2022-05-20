@@ -10,8 +10,10 @@ public abstract class CrapsBet
         LOSE
     }
 
-    public string BetName;
+    public string Name;
     public int PayoutMultiplier;
+    public int Amount;
 
-    public abstract eResult Resolve();
+    public abstract eResult Resolve(int[] rolls);
+
 }
