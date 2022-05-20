@@ -25,8 +25,6 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] AudioClip winMusic;
     public List<Sprite> cardImages = new List<Sprite>();
 
-
-
     public Pause pauser;
     public GameData gameData;
 

@@ -25,16 +25,28 @@ public class CrapsManager : Singleton<CrapsManager>
         Bets.Remove(bet);
     }
 
-    public void ResolveBets(int[] rollResults)
+    public void ResolveBets(int[] rolls)
     {
+        string output = "";
+
         foreach(CrapsBet bet in Bets)
         {
-            var result = bet.Resolve();
+            var result = bet.Resolve(rolls);
 
             if (result == CrapsBet.eResult.WIN)
             {
-                //
+                if (!output.Equals("")) output += ", ";
+                output += bet.Name;
             }
+        }
+
+        if (!output.Equals(""))
+        {
+            GameManager.Instance.OnWin("You won the following bet(s): " + output);
+        }
+        else
+        {
+
         }
     }
 }
