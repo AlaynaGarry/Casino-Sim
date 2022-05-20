@@ -13,7 +13,7 @@ public class MultiBarBet : CrapsBet
         PayoutMultiplier = 1;
     }
 
-    public override eResult Resolve(int[] rolls)
+    public override eResult? Resolve(int[] rolls)
     {
         
         return eResult.LOSE;
