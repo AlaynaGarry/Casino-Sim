@@ -11,13 +11,19 @@ public class CardDeck : MonoBehaviour
 
     public void CreateDeck()
     {
+        deck = new List<Card>();
+        discardPile = new List<Card>();
         foreach(cardSuit suit in Enum.GetValues(typeof(cardSuit)))
         {
             foreach (cardValue value in Enum.GetValues(typeof(cardValue)))
             {
-                deck.Add(new Card(suit, value));
+                var card = gameObject.AddComponent<Card>();
+                card.Suit = suit;
+                card.Value = value;
+                deck.Add(card);
             }
         }
+        ShuffleDeck();
     }
 
     public void ShuffleDeck()
@@ -58,6 +64,34 @@ public class CardDeck : MonoBehaviour
         {
             discardPile.Add(card);
         }
+    }
+
+    //used in blackjack game, returns an array because i need a vaule with high ace and low ace
+    public static int[] valueOfHand(List<Card> handToCheck)
+    {
+        int[] result = new int[] { 0, 0 };
+        foreach(var card in handToCheck)
+        {
+            if ((int)card.Value == 0)
+            {
+                result[0] += 1;
+                result[1] += 11;
+            }
+            else
+            {
+                if((int)card.Value == 12 || (int)card.Value == 11 || (int)card.Value == 10)
+                {
+                    result[0] += 10;
+                    result[1] += 10;
+                }
+                else
+                {
+                    result[0] += (int)card.Value + 1;
+                    result[1] += (int)card.Value + 1;
+                }
+            }
+        }
+        return result;
     }
 }
 

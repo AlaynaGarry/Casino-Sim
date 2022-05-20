@@ -10,26 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a3e31a32879de8946b9fe9bd79136534, type: 3}
-  m_Name: CasinoSimData
+  m_Name: BlackjackData
   m_EditorClassIdentifier: 
   boolData:
     values: []
   intData:
     values:
-    - key: ChipsInHand
+    - key: DealerHandValue
       value: 0
-    - key: ChipsInLimbo
-      value: 260
-    - key: MoneyInBank
-      value: 1000000
+    - key: DealerHandValueHighAce
+      value: 0
+    - key: PlayerHandValue
+      value: 0
+    - key: PlayerHandValueHighAce
+      value: 0
   floatData:
-    values:
-    - key: MasterVolume
-      value: 1
-    - key: SFXVolume
-      value: 0.50912124
-    - key: MusicVolume
-      value: 0.4029247
+    values: []
   stringData:
     values: []
   vector3Data:
