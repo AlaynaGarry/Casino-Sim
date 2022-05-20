@@ -12,8 +12,18 @@ public abstract class CrapsBet
 
     public string Name;
     public int PayoutMultiplier;
-    public int Amount;
+    protected int Amount;
 
-    public abstract eResult Resolve(int[] rolls);
+    public abstract eResult? Resolve(int[] rolls);
 
+    public void Win()
+    {
+        GameManager.Instance.gameData.intData["ChipsInHands"] += Amount * PayoutMultiplier + Amount;
+        GameManager.Instance.gameData.intData["ChipsInLimbo"] -= Amount;
+    }
+
+    public void Lose()
+    {
+        GameManager.Instance.gameData.intData["ChipsInLimbo"] -= Amount;
+    }
 }
