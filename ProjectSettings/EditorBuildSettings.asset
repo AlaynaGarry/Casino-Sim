@@ -9,6 +9,15 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 924a49303d79a7743a509fc61fa99d3f
   - enabled: 1
+    path: Assets/Scenes/Blackjack.unity
+    guid: 1285923cb43b1744fa2d8e765b900c66
+  - enabled: 1
+    path: Assets/Scenes/5CardPoker.unity
+    guid: 47de8d69759c6ac41b655842de31e422
+  - enabled: 1
+    path: Assets/Scenes/Craps.unity
+    guid: 6e3bafe2e40e19d469eba12b0db9e2df
+  - enabled: 1
     path: Assets/Scenes/GameBase.unity
     guid: 305e08309f594294895857d46eaa16b2
   m_configObjects: {}

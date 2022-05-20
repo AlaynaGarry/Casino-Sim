@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -65,6 +66,11 @@ public class PokerGameManager : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    internal void PlayAgain()
+    {
+        throw new NotImplementedException();
     }
 
     public void CreateDeck()

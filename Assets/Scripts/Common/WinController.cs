@@ -48,10 +48,12 @@ public class WinController : MonoBehaviour
                 GameObject.FindObjectOfType<BlackjackManager>().RestartGame();
                 break;
             case eCurrentGame.FIVECARD:
+                GameObject.FindObjectOfType<PokerGameManager>().PlayAgain();
                 break;
             case eCurrentGame.CRAPS:
                 break;
             case eCurrentGame.ROULETTE:
+                GameObject.FindObjectOfType<RouletteTable>().resetGame();
                 break;
             default:
                 break;
