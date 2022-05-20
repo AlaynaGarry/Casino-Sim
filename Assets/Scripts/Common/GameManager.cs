@@ -19,10 +19,12 @@ public class GameManager : Singleton<GameManager>
 
     [SerializeField] SceneLoader sceneLoader;
     [SerializeField] GameObject winUI;
+    [SerializeField] TextMeshProUGUI winUIMessage;
+    [SerializeField] TextMeshProUGUI loseUIMessage;
     [SerializeField] GameObject loseUI;
     [SerializeField] AudioClip loseMusic;
     [SerializeField] AudioClip winMusic;
-    
+    public List<Sprite> cardImages = new List<Sprite>();
 
     public Pause pauser;
     public GameData gameData;
@@ -63,7 +65,7 @@ public class GameManager : Singleton<GameManager>
             case State.PLAYER_START:
                 break;
             case State.GAME:
-                if (gameData.intData["Chips"] <= 0 && gameData.intData["ChipsInLimbo"] == 0)
+                if (gameData.intData["ChipsInHands"] <= 0 && gameData.intData["ChipsInLimbo"] == 0)
                 {
                     state = State.GAME_OVER;
                     OnLose();
@@ -107,19 +109,21 @@ public class GameManager : Singleton<GameManager>
     }
 
 
-    public void OnLose()
+    public void OnLose(string messageToDisplay = "You ran out of chips. Return to the main menu to vist the bank and get more chips.")
     {
         loseUI.SetActive(true);
+        loseUIMessage.text = messageToDisplay;
         pauser.paused = false;
         if (loseMusic) AudioManager.Instance.PlayMusic(loseMusic);
     }
 
-    public void OnWin()
+    public void OnWin(string messageToDisplay)
     {
         state = State.GAME_WIN;
         pauser.paused = false;
         if (winMusic) AudioManager.Instance.PlayMusic(winMusic);
         winUI.SetActive(true);
+        winUIMessage.text = messageToDisplay;
     }
 
     private void EnsureAllUIOff()
