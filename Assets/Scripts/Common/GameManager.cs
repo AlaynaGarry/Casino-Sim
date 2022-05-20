@@ -135,8 +135,8 @@ public class GameManager : Singleton<GameManager>
 
     private void EnsureAllUIOff()
     {
-        winUI?.SetActive(false);
-        loseUI?.SetActive(false);
+        if(winUI) winUI.SetActive(false);
+        if(loseUI) loseUI.SetActive(false);
     }
 
     public void UpdateResolution(TMP_Dropdown resolutionSelection)

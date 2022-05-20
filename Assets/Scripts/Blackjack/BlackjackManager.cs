@@ -59,6 +59,20 @@ public class BlackjackManager : MonoBehaviour
         actionButtons.ForEach(button => button.SetActive(false));
         playerHand.ForEach(card => card.SetActive(false));
         dealerHand.ForEach(card => card.SetActive(false));
+        foreach(var cardObject in playerHand)
+        {
+            if(cardObject.TryGetComponent(out Card card))
+            {
+                Destroy(card);
+            }
+        }
+        foreach (var cardObject in dealerHand)
+        {
+            if (cardObject.TryGetComponent(out Card card))
+            {
+                Destroy(card);
+            }
+        }
     }
 
     private void DealerFirstTurn()

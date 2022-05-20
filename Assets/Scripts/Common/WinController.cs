@@ -53,7 +53,7 @@ public class WinController : MonoBehaviour
             case eCurrentGame.CRAPS:
                 break;
             case eCurrentGame.ROULETTE:
-                //GameObject.FindObjectOfType<RouletteManager>
+                GameObject.FindObjectOfType<RouletteTable>().resetGame();
                 break;
             default:
                 break;
