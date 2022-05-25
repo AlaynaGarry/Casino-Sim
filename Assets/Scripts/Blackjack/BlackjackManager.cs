@@ -99,7 +99,7 @@ public class BlackjackManager : MonoBehaviour
 
     public void RunDealerTurn()
     {
-        if (blackjackData.intData["DealerHandValue"] > 17) return;
+        if (blackjackData.intData["DealerHandValue"] >= 17 || lastDealerHandIndex > 4) return;
         var card = blackjackDeck.DealHand(1)[0];
         dealerHand[lastDealerHandIndex].AddComponent<Card>();
         dealerHand[lastDealerHandIndex].GetComponent<Card>().Suit = card.Suit;
