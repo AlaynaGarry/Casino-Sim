@@ -37,6 +37,7 @@ public class CrapsManager : Singleton<CrapsManager>
             {
                 if (!output.Equals("")) output += ", ";
                 output += bet.Name;
+                Bets.Remove(bet);
             }
         }
 

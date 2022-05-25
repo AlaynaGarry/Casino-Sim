@@ -27,6 +27,11 @@ public class MainMenuHandler : MonoBehaviour
         }
     }
 
+    public void LoadScene(string name)
+    {
+        GameManager.Instance.OnLoadScene(name);
+    }
+
     public void ToBank()
     {
         MenuManager.Instance.GoFromCanvasToCanvas(mainMenu, bank);

@@ -7,6 +7,13 @@ using TMPro;
 
 public class GameManager : Singleton<GameManager>
 {
+    public enum eResolution
+    {
+        SEVEN_TWENTY = 0,
+        TEN_EIGHTY = 1,
+        FOUR_K = 2
+    }
+
     public enum State
     {
         TITLE,
@@ -28,7 +35,7 @@ public class GameManager : Singleton<GameManager>
 
     public Pause pauser;
     public GameData gameData;
-
+    public bool isFullscreen { get; set; }
     public State state = State.TITLE;
 
     public override void Awake()
@@ -128,7 +135,31 @@ public class GameManager : Singleton<GameManager>
 
     private void EnsureAllUIOff()
     {
-        winUI?.SetActive(false);
-        loseUI?.SetActive(false);
+        if(winUI) winUI.SetActive(false);
+        if(loseUI) loseUI.SetActive(false);
+    }
+
+    public void UpdateResolution(TMP_Dropdown resolutionSelection)
+    {
+        switch ((eResolution)resolutionSelection.value)
+        {
+            case eResolution.SEVEN_TWENTY:
+                Screen.SetResolution(1280, 720, isFullscreen);
+                break;
+            case eResolution.TEN_EIGHTY:
+                Screen.SetResolution(1920, 1080, isFullscreen);
+                break;
+            case eResolution.FOUR_K:
+                Screen.SetResolution(3840, 2160, isFullscreen);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void UpdateFullscreen(Toggle fullscreenToggle)
+    {
+        isFullscreen = fullscreenToggle.isOn;
+        Screen.fullScreen = isFullscreen;
     }
 }
