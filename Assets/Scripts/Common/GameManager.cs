@@ -30,7 +30,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] TextMeshProUGUI loseUIMessage;
     [SerializeField] GameObject loseUI;
     [SerializeField] AudioClip loseMusic;
-    [SerializeField] AudioClip winMusic;
+    public AudioClip winMusic;
     public List<Sprite> cardImages = new List<Sprite>();
 
     public Pause pauser;
