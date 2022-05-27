@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class CrapsManager : Singleton<CrapsManager>
 {
+    [SerializeField] DiceDisplay Dice1;
+    [SerializeField] DiceDisplay Dice2;
+
     List<CrapsBet> Bets = new List<CrapsBet>();
 
     public void Round()
