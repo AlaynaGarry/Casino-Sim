@@ -4,30 +4,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Assets.Scripts.Craps
+public class OneWayBets : CrapsBet
 {
-    public class OneWayBets : CrapsBet
+    public int? WinRoll { get; private set; } = null;
+
+    public OneWayBets(int Amount, string name, int multiplier, int winRoll)
     {
-        public int? WinRoll { get; private set; } = null;
+        Name = name;
+        PayoutMultiplier = multiplier;
+        this.Amount = Amount;
+        this.WinRoll = winRoll;
+    }
 
-        public OneWayBets(int Amount, string name, int multiplier, int winRoll)
+    public override eResult? Resolve(int[] rolls)
+    {
+        int value = rolls[0] + rolls[1];
+
+        if (value == WinRoll)
         {
-            Name = name;
-            PayoutMultiplier = multiplier;
-            this.Amount = Amount;
-            this.WinRoll = winRoll;
+            return eResult.WIN;
         }
 
-        public override eResult? Resolve(int[] rolls)
-        {
-            int value = rolls[0] + rolls[1];
-
-            if (value == WinRoll)
-            {
-                return eResult.WIN;
-            }
-
-            return eResult.LOSE;
-        }
+        return eResult.LOSE;
     }
 }
+

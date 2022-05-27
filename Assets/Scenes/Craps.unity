@@ -1414,6 +1414,7 @@ GameObject:
   - component: {fileID: 402170803}
   - component: {fileID: 402170802}
   - component: {fileID: 402170801}
+  - component: {fileID: 402170804}
   m_Layer: 5
   m_Name: 4 Bet
   m_TagString: Untagged
@@ -1523,6 +1524,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 402170799}
   m_CullTransparentMesh: 1
+--- !u!114 &402170804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 402170799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bab1c9ea1bc237248a4fdb499033f902, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BetType: 4
+  Name: 4 point
+  Multiplier: 1
+  WinRoll: 0
 --- !u!1 &432356993
 GameObject:
   m_ObjectHideFlags: 0

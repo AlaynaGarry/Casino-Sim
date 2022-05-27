@@ -12,6 +12,9 @@ public class CrapsManager : Singleton<CrapsManager>
     [SerializeField] DiceDisplay Dice1;
     [SerializeField] DiceDisplay Dice2;
 
+    [HideInInspector]
+    public int Amount;
+
     List<CrapsBet> Bets = new List<CrapsBet>();
 
     public void Round()
