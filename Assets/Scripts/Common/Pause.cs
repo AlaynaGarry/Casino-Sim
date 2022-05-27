@@ -28,11 +28,6 @@ public class Pause : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        Cursor.lockState = CursorLockMode.Confined;
-    }
-
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
