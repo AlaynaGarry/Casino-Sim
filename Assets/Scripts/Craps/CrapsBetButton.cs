@@ -11,7 +11,8 @@ public class CrapsBetButton : MonoBehaviour
         MultiLine,
         Hardway,
         OneWay,
-        Point
+        Point,
+        Field
     }
 
     [Header("Bet Info")]
@@ -43,6 +44,9 @@ public class CrapsBetButton : MonoBehaviour
                     break;
                 case eBetType.Point:
                     bet = new PointBets(amount, Name);
+                    break;
+                case eBetType.Field:
+                    bet = new Field(amount, Multiplier);
                     break;
                 default:
                     throw new ArgumentNullException();
