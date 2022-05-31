@@ -15,6 +15,7 @@ public class BlackjackManager : MonoBehaviour
     [SerializeField] GameObject startButton;
     [SerializeField] GameObject clearBetButton;
     [SerializeField] GameObject betContainer;
+    [SerializeField] float timeBetweenTurns = 2;
 
 
     private CardDeck blackjackDeck;
@@ -59,6 +60,8 @@ public class BlackjackManager : MonoBehaviour
         actionButtons.ForEach(button => button.SetActive(false));
         playerHand.ForEach(card => card.SetActive(false));
         dealerHand.ForEach(card => card.SetActive(false));
+        lastDealerHandIndex = 0;
+        lastPlayerHandIndex = 0;
         foreach(var cardObject in playerHand)
         {
             if(cardObject.TryGetComponent(out Card card))
@@ -104,6 +107,12 @@ public class BlackjackManager : MonoBehaviour
         dealerHand[lastDealerHandIndex].AddComponent<Card>();
         dealerHand[lastDealerHandIndex].GetComponent<Card>().Suit = card.Suit;
         dealerHand[lastDealerHandIndex].GetComponent<Card>().Value = card.Value;
+        StartCoroutine(DealerCoroutine());
+    }
+
+    private IEnumerator DealerCoroutine()
+    {
+        yield return new WaitForSeconds(timeBetweenTurns / 2);
         dealerHand[lastDealerHandIndex].SetActive(true);
         lastDealerHandIndex++;
         //if busted, lose
@@ -116,7 +125,7 @@ public class BlackjackManager : MonoBehaviour
         int[] currentDealerHandValues = CardDeck.valueOfHand(cardsInHand);
         blackjackData.intData["DealerHandValue"] = currentDealerHandValues[0];
         blackjackData.intData["DealerHandValueHighAce"] = currentDealerHandValues[1];
-        CheckDealerHand();
+        //CheckDealerHand();
         UpdateUI();
     }
 
@@ -169,6 +178,12 @@ public class BlackjackManager : MonoBehaviour
 
     public void FinishGame(int betPayout, bool isDraw = false)
     {
+        StartCoroutine(FinishCoroutine(betPayout, isDraw));
+    }
+
+    private IEnumerator FinishCoroutine(int betPayout, bool isDraw)
+    {
+        yield return new WaitForSeconds(timeBetweenTurns);
         dealerHand[0].GetComponent<Card>().cardFaceDown = false;
         dealerHand[0].SetActive(false);
         dealerHand[0].SetActive(true);
@@ -176,13 +191,13 @@ public class BlackjackManager : MonoBehaviour
         {
             GameManager.Instance.gameData.intData["ChipsInHand"] += GameManager.Instance.gameData.intData["ChipsInLimbo"];
             GameManager.Instance.gameData.intData["ChipsInLimbo"] = 0;
-            GameManager.Instance.OnWin("Ya matched with the dealear! You got your bet back.");
+            GameManager.Instance.OnWin("You matched with the dealear! You got your bet back.");
 
         }
         else if (betPayout == 0)
         {
             GameManager.Instance.gameData.intData["ChipsInLimbo"] = 0;
-            GameManager.Instance.OnLose("Ya busted!");
+            GameManager.Instance.OnLose("You busted!");
         }
         else
         {
@@ -245,15 +260,28 @@ public class BlackjackManager : MonoBehaviour
         int[] currentPlayerHandValues = CardDeck.valueOfHand(cardsInHand);
         blackjackData.intData["PlayerHandValue"] = currentPlayerHandValues[0];
         blackjackData.intData["PlayerHandValueHighAce"] = currentPlayerHandValues[1];
+        StartCoroutine(WaitToFinishHit());
+    }
+
+    private IEnumerator WaitToFinishHit()
+    {
         RunDealerTurn();
+        foreach(var button in actionButtons)
+        {
+            button.SetActive(false);
+        }
         CheckPlayerHand();
+        yield return new WaitForSeconds(timeBetweenTurns / 2);
+        foreach (var button in actionButtons)
+        {
+            button.SetActive(true);
+        }
         UpdateUI();
     }
 
     public void Stay()
     {
-
-        do { RunDealerTurn(); } while (blackjackData.intData["DealerHandValue"] < 17 || lastDealerHandIndex > 4);
+        ContinueDealer();
 
         if (blackjackData.intData["PlayerHandValue"] == blackjackData.intData["DelearHandValue"]) { FinishGame(0, true); return; }
         else
@@ -283,6 +311,11 @@ public class BlackjackManager : MonoBehaviour
         }
     }
 
+    private void ContinueDealer()
+    {
+        do { RunDealerTurn(); } while (blackjackData.intData["DealerHandValue"] < 17 || lastDealerHandIndex > 4);
+    }
+
     public void Split()
     {
 
@@ -310,12 +343,14 @@ public class BlackjackManager : MonoBehaviour
         if (blackjackData.intData["PlayerHandValue"] > 21 && blackjackData.intData["PlayerHandValueHighAce"] > 21)
         {
             //busted, lose the game
+            ContinueDealer();
             FinishGame(0);
             return true;
         }
         else if (blackjackData.intData["PlayerHandValue"] == 21 || blackjackData.intData["PlayerHandValueHighAce"] == 21)
         {
             //win game with blackjack
+            ContinueDealer();
             if (blackjackData.intData["DealerHandValue"] == 21 || blackjackData.intData["DealerHandValueHighAce"] == 21) { FinishGame(0, true); return true; }
             else { FinishGame(2); return true; }
         }
