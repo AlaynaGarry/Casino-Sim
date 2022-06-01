@@ -160,15 +160,29 @@ public class PokerGameManager : MonoBehaviour
     {
         List<Card> playerHand = new List<Card>();
         playerHand = cardDeck.DealHand(5);
+        lastPlayerHandIndex = 0;
 
         for (int i = 0; i < 5; i++)
         {
+            
             var card = playerHand[i];
-            PlayerHandUI[lastPlayerHandIndex].AddComponent<Card>();
-            PlayerHandUI[lastPlayerHandIndex].GetComponent<Card>().Suit = card.Suit;
-            PlayerHandUI[lastPlayerHandIndex].GetComponent<Card>().Value = card.Value;
-            PlayerHandUI[lastPlayerHandIndex].SetActive(true);
-            lastPlayerHandIndex++;
+            Card cardComp;
+            if (PlayerHandUI[lastPlayerHandIndex].TryGetComponent<Card>(out cardComp))
+            {
+                PlayerHandUI[lastPlayerHandIndex].GetComponent<Card>().Suit = card.Suit;
+                PlayerHandUI[lastPlayerHandIndex].GetComponent<Card>().Value = card.Value;
+                PlayerHandUI[lastPlayerHandIndex].SetActive(true);
+                lastPlayerHandIndex++;
+            }
+            else
+            {
+                PlayerHandUI[lastPlayerHandIndex].AddComponent<Card>();
+                PlayerHandUI[lastPlayerHandIndex].GetComponent<Card>().Suit = card.Suit;
+                PlayerHandUI[lastPlayerHandIndex].GetComponent<Card>().Value = card.Value;
+                PlayerHandUI[lastPlayerHandIndex].SetActive(true);
+                lastPlayerHandIndex++;
+            }
+            
         }
     }
     public void PayAnte()
@@ -244,7 +258,7 @@ public class PokerGameManager : MonoBehaviour
         else
         {
             GameManager.Instance.gameData.intData["ChipsInHand"] += (moneyInPool + (moneyInPool * ((int)winRate)));
-            GameManager.Instance.OnWin("Your hand was a " + winRate.ToString() + ". \nCongradulations!!! You won " + (moneyInPool + (moneyInPool * ((int)winRate))));
+            GameManager.Instance.OnWin("Your hand was a " + winRate.ToString() + ". \nCongradulations!!! You won " + (moneyInPool + (moneyInPool * ((int)winRate))) + " chips!!!");
         }
         GameManager.Instance.gameData.intData["ChipsInLimbo"] = 0;
 
@@ -309,6 +323,8 @@ public class PokerGameManager : MonoBehaviour
 
         uniqueEnums.Sort();
         foreach (int num in uniqueEnums) cardHandPattern += num;
+
+        if (cardHandPattern == "5") return WinRate.FLUSH;
         //return winrate.flush if a flush
         //else return none
         return WinRate.None;
@@ -356,7 +372,12 @@ public class PokerGameManager : MonoBehaviour
     public void PlayAgain()
     {
         GoodUI.SetActive(false);
-
+        foreach(var card in PlayerHandUI)
+        {
+            card.GetComponent<Card>().hold = false;
+            card.GetComponent<CardUI>().readyToCheck = false;
+            card.SetActive(false);
+        }
         state = State.GAME_SET_UP;
     }
 

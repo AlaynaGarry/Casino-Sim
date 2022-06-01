@@ -25,7 +25,7 @@ public class WinController : MonoBehaviour
             case "Blackjack":
                 continueButton.onClick.AddListener(() => ResetGame(0));
                 break;
-            case "FiveCard":
+            case "5CardPoker":
                 continueButton.onClick.AddListener(() => ResetGame(1));
                 break;
             case "Craps":
