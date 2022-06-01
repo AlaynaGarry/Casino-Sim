@@ -17,9 +17,9 @@ MonoBehaviour:
   intData:
     values:
     - key: ChipsInHand
-      value: 0
+      value: 90
     - key: ChipsInLimbo
-      value: 260
+      value: 10
     - key: MoneyInBank
       value: 1000000
   floatData:

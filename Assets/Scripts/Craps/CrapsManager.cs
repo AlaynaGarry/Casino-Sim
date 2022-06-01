@@ -41,22 +41,27 @@ public class CrapsManager : Singleton<CrapsManager>
         string winOutput = "";
         string loseOutput = "";
 
-        foreach(CrapsBet bet in Bets)
+        for(int i = 0; i < Bets.Count; i++)
         {
-            var result = bet.Resolve(rolls);
+            var result = Bets[i].Resolve(rolls);
 
             if (result == CrapsBet.eResult.WIN)
             {
                 if (!winOutput.Equals("")) winOutput += ", ";
-                winOutput += bet.Name;
-                Bets.Remove(bet);
+                winOutput += Bets[i].Name;
+                Bets.Remove(Bets[i--]);
             }
             
-            if (result == CrapsBet.eResult.WIN)
+            if (result == CrapsBet.eResult.LOSE)
             {
                 if (!loseOutput.Equals("")) loseOutput += ", ";
-                loseOutput += bet.Name;
-                Bets.Remove(bet);
+                loseOutput += Bets[i].Name;
+                Bets.Remove(Bets[i--]);
+            }
+
+            if (result == CrapsBet.eResult.softWIN)
+            {
+                Bets.Remove(Bets[i--]);
             }
         }
 
@@ -73,6 +78,8 @@ public class CrapsManager : Singleton<CrapsManager>
             output = "You lost the following bet(s): " + loseOutput;
         }
 
+        if (output.Equals("")) output = "Nothing happened";
+
         Display(output);
     }
 
@@ -80,7 +87,6 @@ public class CrapsManager : Singleton<CrapsManager>
     {
         GameManager.Instance.state = GameManager.State.GAME_WIN;
         GameManager.Instance.pauser.paused = false;
-        if (GameManager.Instance.winMusic) AudioManager.Instance.PlayMusic(GameManager.Instance.winMusic);
         displayUI.SetActive(true);
         displayUIMessage.text = messageToDisplay;
     }
