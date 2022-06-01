@@ -62,16 +62,59 @@ public class RouletteTable : MonoBehaviour
 
     public void SetPlayerBet(int betValue)
     {
-        Debug.Log(playerChipBet);
+        //Debug.Log(playerChipBet);
         playerChipBet = betValue;
-
+        GameManager.Instance.gameData.intData["ChipsInLimbo"] = betValue;
 
     }
 
     public void setPlayerBetOnBoard(string bet)
     {
         playerBetLocation = bet;
-        checkPlayerWin(playerBetLocation);
+        if(checkPlayerWin(playerBetLocation) == false)
+        {
+            GameManager.Instance.OnLose("You have lost the game and lost " + GameManager.Instance.gameData.intData["ChipsInLimbo"] + " chips please play again");
+            GameManager.Instance.gameData.intData["ChipsInHand"] = GameManager.Instance.gameData.intData["ChipsInHand"] - playerChipBet;
+        }
+        else if(checkPlayerWin(playerBetLocation) == true)
+        {
+            if (playerBetLocation == "High")
+            {
+                GameManager.Instance.gameData.intData["ChipsInLimbo"] = playerChipBet + playerChipBet;
+                GameManager.Instance.OnWin("you have won " + GameManager.Instance.gameData.intData["ChipsInLimbo"] + " do you want to play again");
+            }
+            else if(playerBetLocation == "Low")
+            {
+                GameManager.Instance.gameData.intData["ChipsInLimbo"] = playerChipBet + playerChipBet;
+                GameManager.Instance.OnWin("you have won " + GameManager.Instance.gameData.intData["ChipsInLimbo"] + " do you want to play again");
+            }
+            else if(playerBetLocation == "Odd")
+            {
+                GameManager.Instance.gameData.intData["ChipsInLimbo"] = playerChipBet + playerChipBet;
+                GameManager.Instance.OnWin("you have won " + GameManager.Instance.gameData.intData["ChipsInLimbo"] + " do you want to play again");
+            }
+            else if(playerBetLocation == "Even")
+            {
+                GameManager.Instance.gameData.intData["ChipsInLimbo"] = playerChipBet + playerChipBet;
+                GameManager.Instance.OnWin("you have won " + GameManager.Instance.gameData.intData["ChipsInLimbo"] + " do you want to play again");
+            }
+            else if(playerBetLocation == "Black")
+            {
+                GameManager.Instance.gameData.intData["ChipsInLimbo"] = playerChipBet + playerChipBet;
+                GameManager.Instance.OnWin("you have won " + GameManager.Instance.gameData.intData["ChipsInLimbo"] + " do you want to play again");
+            }
+            else if(playerBetLocation == "Red")
+            {
+                GameManager.Instance.gameData.intData["ChipsInLimbo"] = playerChipBet + playerChipBet;
+                GameManager.Instance.OnWin("you have won " + GameManager.Instance.gameData.intData["ChipsInLimbo"] + " do you want to play again");
+            }
+            else
+            {
+                GameManager.Instance.gameData.intData["ChipsInLimbo"] = (playerChipBet * 36) + playerChipBet;
+                GameManager.Instance.OnWin("you have won " + GameManager.Instance.gameData.intData["ChipsInLimbo"] + " do you want to play again");
+            }
+        }
+        
 
     }
 
