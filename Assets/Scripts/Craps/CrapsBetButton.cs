@@ -25,6 +25,7 @@ public class CrapsBetButton : MonoBehaviour
     {
         try
         {
+            Debug.Log(Name);
             var amount = CrapsManager.Instance.Amount;
             CrapsBet bet;
 
@@ -61,5 +62,10 @@ public class CrapsBetButton : MonoBehaviour
         {
 
         }
+    }
+
+    public void StartRound()
+    {
+        CrapsManager.Instance.Round();
     }
 }

@@ -19,7 +19,12 @@ public class Field : CrapsBet
 
         if (value != Point)
         {
-            if (value == 2 || value == 3 || value == 4 || value == 9 || value == 10 || value == 11 || value == 12)
+            if(value == 2 || value == 12)
+            {
+                return eResult.softWIN;
+            }
+
+            if ( value == 3 || value == 4 || value == 9 || value == 10 || value == 11)
             {
                 return eResult.WIN;
             }

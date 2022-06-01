@@ -7,6 +7,7 @@ public abstract class CrapsBet
     public enum eResult
     {
         WIN,
+        softWIN,
         LOSE
     }
 
