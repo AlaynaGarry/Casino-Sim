@@ -1,9 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class CrapsManager : Singleton<CrapsManager>
 {
+
+    [SerializeField] GameObject displayUI;
+    [SerializeField] TextMeshProUGUI displayUIMessage;
+
+    [SerializeField] DiceDisplay Dice1;
+    [SerializeField] DiceDisplay Dice2;
+
+    [HideInInspector]
+    public int Amount;
+
     List<CrapsBet> Bets = new List<CrapsBet>();
 
     public void Round()
@@ -27,7 +38,8 @@ public class CrapsManager : Singleton<CrapsManager>
 
     public void ResolveBets(int[] rolls)
     {
-        string output = "";
+        string winOutput = "";
+        string loseOutput = "";
 
         foreach(CrapsBet bet in Bets)
         {
@@ -35,19 +47,41 @@ public class CrapsManager : Singleton<CrapsManager>
 
             if (result == CrapsBet.eResult.WIN)
             {
-                if (!output.Equals("")) output += ", ";
-                output += bet.Name;
+                if (!winOutput.Equals("")) winOutput += ", ";
+                winOutput += bet.Name;
+                Bets.Remove(bet);
+            }
+            
+            if (result == CrapsBet.eResult.WIN)
+            {
+                if (!loseOutput.Equals("")) loseOutput += ", ";
+                loseOutput += bet.Name;
                 Bets.Remove(bet);
             }
         }
 
-        if (!output.Equals(""))
-        {
-            GameManager.Instance.OnWin("You won the following bet(s): " + output);
-        }
-        else
-        {
+        string output = "";
 
+        if (!winOutput.Equals(""))
+        {
+            output = "You won the following bet(s): " + winOutput;
         }
+        
+        if (!loseOutput.Equals(""))
+        {
+            if (!output.Equals("")) output += "\n";
+            output = "You lost the following bet(s): " + loseOutput;
+        }
+
+        Display(output);
+    }
+
+    public void Display(string messageToDisplay)
+    {
+        GameManager.Instance.state = GameManager.State.GAME_WIN;
+        GameManager.Instance.pauser.paused = false;
+        if (GameManager.Instance.winMusic) AudioManager.Instance.PlayMusic(GameManager.Instance.winMusic);
+        displayUI.SetActive(true);
+        displayUIMessage.text = messageToDisplay;
     }
 }

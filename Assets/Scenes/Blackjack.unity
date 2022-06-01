@@ -2236,6 +2236,7 @@ MonoBehaviour:
   startButton: {fileID: 1282306127}
   clearBetButton: {fileID: 1550690422}
   betContainer: {fileID: 1020508819}
+  timeBetweenTurns: 2
 --- !u!114 &1015370646
 MonoBehaviour:
   m_ObjectHideFlags: 0
