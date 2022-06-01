@@ -57,7 +57,7 @@ public class RouletteTable : MonoBehaviour
 
     public void resetGame()
     {
-
+        GameManager.Instance.OnLoadScene("RoulleteScene");
     }
 
     public void SetPlayerBet(int betValue)
